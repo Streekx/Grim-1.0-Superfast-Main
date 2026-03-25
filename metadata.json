@@ -1,0 +1,5 @@
+{
+  "name": "Termux Crawler Infrastructure",
+  "description": "Zero-cost, high-scale data crawling and automation system optimized for mobile environments.",
+  "requestFramePermissions": []
+}

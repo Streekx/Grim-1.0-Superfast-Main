@@ -1,0 +1,11 @@
+{
+  "name": "termux-crawler-backend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "python3 -m http.server 3000",
+    "build": "echo 'No build step required for Python scripts'",
+    "start": "python3 -m http.server 3000"
+  }
+}
