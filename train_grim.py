@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import os
-import glob
+from datasets import load_dataset
 
 # Hyperparameters
 batch_size = 64
@@ -19,19 +19,10 @@ dropout = 0.2
 
 print(f"Using device: {device}")
 
-# Load data from Kaggle input directory
-data_dir = '/kaggle/input/grim-training-data'
-text = ""
-
-print("Loading raw text data...")
-if os.path.exists(data_dir):
-    for filepath in glob.glob(os.path.join(data_dir, '*.txt')):
-        with open(filepath, 'r', encoding='utf-8') as f:
-            text += f.read() + "\n"
-
-if not text:
-    print("Warning: No text data found. Using fallback text for initialization.")
-    text = "This is a fallback text because the dataset was empty. " * 1000
+# Load data directly from HuggingFace
+print("Downloading dataset from HuggingFace...")
+dataset = load_dataset("wikitext", "wikitext-2-raw-v1", split="train")
+text = "".join(dataset["text"])
 
 print(f"Total dataset size: {len(text)} characters")
 
@@ -42,8 +33,8 @@ print(f"Vocabulary size: {vocab_size} unique characters")
 
 stoi = { ch:i for i,ch in enumerate(chars) }
 itos = { i:ch for i,ch in enumerate(chars) }
-encode = lambda s: [stoi[c] for c in s]
-decode = lambda l: ''.join([itos[i] for i in l])
+encode = lambda s: [stoi.get(c, 0) for c in s]
+decode = lambda l: ''.join([itos.get(i, '') for i in l])
 
 # Train/Val split
 data = torch.tensor(encode(text), dtype=torch.long)
@@ -194,6 +185,7 @@ for iter in range(max_iters):
 
 # Save the model to Kaggle output directory
 output_path = '/kaggle/working/grim_model.pth'
+os.makedirs(os.path.dirname(output_path), exist_ok=True)
 state_dict = model.module.state_dict() if isinstance(model, nn.DataParallel) else model.state_dict()
 torch.save(state_dict, output_path)
 print(f"Training complete. Weights saved to {output_path}")

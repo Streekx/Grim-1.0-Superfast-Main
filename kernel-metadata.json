@@ -1,15 +1,13 @@
 {
-  "id": "anshstreek/grim-ai-trainer",
-  "title": "Grim AI Trainer",
+  "id": "anshstreek/grim-cloud-trainer",
+  "title": "Grim AI Cloud Trainer",
   "code_file": "train_grim.py",
   "language": "python",
   "kernel_type": "script",
   "is_private": true,
   "enable_gpu": true,
   "enable_internet": true,
-  "dataset_sources": [
-    "anshstreek/grim-training-data"
-  ],
+  "dataset_sources": [],
   "competition_sources": [],
   "kernel_sources": [],
   "model_sources": []
